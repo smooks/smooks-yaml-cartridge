@@ -26,7 +26,6 @@ import org.smooks.cdr.annotation.ConfigParam.Use;
 import org.smooks.container.ExecutionContext;
 import org.smooks.delivery.annotation.Initialize;
 import org.smooks.xml.SmooksXMLReader;
-import org.smooks.yaml.handler.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
