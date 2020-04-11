@@ -9,4 +9,4 @@
 * JDK 8 or higher
 * Maven 3
 
-## [Documentation](https://www.smooks.org/documentation/#YAML)
+## [Documentation](https://www.smooks.org/documentation/#yaml)
