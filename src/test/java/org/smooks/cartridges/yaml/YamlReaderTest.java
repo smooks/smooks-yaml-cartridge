@@ -70,31 +70,26 @@ public class YamlReaderTest {
 
     @Test
     public void test_yaml_types() throws Exception {
-
         testBasic("yaml_types");
     }
 
     @Test
     public void test_yaml_map() throws Exception {
-
         testBasic("yaml_map");
     }
 
     @Test
     public void test_yaml_array() throws Exception {
-
         testBasic("yaml_array");
     }
 
     @Test
     public void test_yaml_map_array() throws Exception {
-
         testBasic("yaml_map_array");
     }
 
     @Test
     public void test_yaml_array_map() throws Exception {
-
         testBasic("yaml_array_map");
     }
 
@@ -340,7 +335,7 @@ public class YamlReaderTest {
 
     private void assertEquals(String fileExpected, byte[] actual) throws IOException, SAXException {
 
-        String expected = StreamUtils.readStreamAsString(getClass().getResourceAsStream(fileExpected));
+        String expected = StreamUtils.readStreamAsString(getClass().getResourceAsStream(fileExpected), "UTF-8");
 
         XMLUnit.setIgnoreWhitespace(true);
         XMLAssert.assertXMLEqual(expected, new String(actual));
