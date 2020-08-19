@@ -42,28 +42,27 @@
  */
 package org.smooks.cartridges.yaml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smooks.SmooksException;
 import org.smooks.cartridges.yaml.handler.*;
 import org.smooks.cdr.Parameter;
 import org.smooks.cdr.SmooksResourceConfiguration;
-import org.smooks.cdr.annotation.Config;
-import org.smooks.cdr.annotation.ConfigParam;
-import org.smooks.cdr.annotation.ConfigParam.Use;
 import org.smooks.container.ExecutionContext;
-import org.smooks.delivery.annotation.Initialize;
 import org.smooks.xml.SmooksXMLReader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.xml.sax.*;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.events.Event;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * YAML to SAX event reader.
@@ -154,46 +153,46 @@ public class YamlReader implements SmooksXMLReader {
 
 	private ExecutionContext executionContext;
 
-	@ConfigParam(defaultVal = XML_ROOT)
-    private String rootName;
+	@Inject
+    private String rootName = XML_ROOT;
 
-	@ConfigParam(defaultVal = XML_DOCUMENT)
-    private String documentName;
+	@Inject
+    private String documentName = XML_DOCUMENT;
 
-	@ConfigParam(defaultVal = XML_ARRAY_ELEMENT_NAME)
-    private String arrayElementName;
+	@Inject
+    private String arrayElementName = XML_ARRAY_ELEMENT_NAME;
 
-	@ConfigParam(use = Use.OPTIONAL)
-    private String keyWhitspaceReplacement;
+	@Inject
+    private Optional<String> keyWhitspaceReplacement;
 
-	@ConfigParam(use = Use.OPTIONAL)
-    private String keyPrefixOnNumeric;
+	@Inject
+    private Optional<String> keyPrefixOnNumeric;
 
-	@ConfigParam(use = Use.OPTIONAL)
-    private String illegalElementNameCharReplacement;
+	@Inject
+    private Optional<String> illegalElementNameCharReplacement;
 
-	@ConfigParam(defaultVal = DEFAULT_ANCHOR_NAME)
-    private String anchorAttributeName;
+	@Inject
+    private String anchorAttributeName = DEFAULT_ANCHOR_NAME;
 
-	@ConfigParam(defaultVal = DEFAULT_ALIAS_NAME)
-    private String aliasAttributeName;
+	@Inject
+    private String aliasAttributeName = DEFAULT_ALIAS_NAME;
 
-    @ConfigParam(defaultVal = "false")
-    private boolean indent;
+    @Inject
+    private Boolean indent = false;
 
-    @ConfigParam(defaultVal = AliasStrategy.REFER_STR, decoder = AliasStrategy.DataDecoder.class)
-    private AliasStrategy aliasStrategy;
+    @Inject
+    private AliasStrategy aliasStrategy = AliasStrategy.REFER;
 
-    @Config
+    @Inject
     private SmooksResourceConfiguration config;
 
     private final Yaml yaml = new Yaml();
 
 	private YamlEventStreamHandler yamlEventStreamParser;
 
-    @Initialize
+    @PostConstruct
     public void initialize() {
-    	ElementNameFormatter elementNameFormatter = new ElementNameFormatter(initKeyMap(), keyWhitspaceReplacement, keyPrefixOnNumeric, illegalElementNameCharReplacement);
+    	ElementNameFormatter elementNameFormatter = new ElementNameFormatter(initKeyMap(), keyWhitspaceReplacement.orElse(null), keyPrefixOnNumeric.orElse(null), illegalElementNameCharReplacement.orElse(null));
     	yamlEventStreamParser = new YamlEventStreamHandler(elementNameFormatter, documentName, arrayElementName);
     }
     /*
@@ -261,10 +260,10 @@ public class YamlReader implements SmooksXMLReader {
 	 */
 	@SuppressWarnings("unchecked")
 	private Map<String, String> initKeyMap() {
-		Parameter keyMapParam = config.getParameter(CONFIG_PARAM_KEY_MAP);
+		Parameter<?> keyMapParam = config.getParameter(CONFIG_PARAM_KEY_MAP, Object.class);
 
        if (keyMapParam != null) {
-           Object objValue = keyMapParam.getObjValue();
+           Object objValue = keyMapParam.getValue();
 
            if(objValue instanceof Map<?, ?>) {
                return (HashMap<String, String>) objValue;
@@ -325,7 +324,7 @@ public class YamlReader implements SmooksXMLReader {
 	 * @return the keyWhitspaceReplacement
 	 */
 	public String getKeyWhitspaceReplacement() {
-		return keyWhitspaceReplacement;
+		return keyWhitspaceReplacement.orElse(null);
 	}
 
 
@@ -333,7 +332,7 @@ public class YamlReader implements SmooksXMLReader {
 	 * @param keyWhitspaceReplacement the keyWhitspaceReplacement to set
 	 */
 	public void setKeyWhitspaceReplacement(String keyWhitspaceReplacement) {
-		this.keyWhitspaceReplacement = keyWhitspaceReplacement;
+		this.keyWhitspaceReplacement = Optional.ofNullable(keyWhitspaceReplacement);
 	}
 
 
@@ -341,7 +340,7 @@ public class YamlReader implements SmooksXMLReader {
 	 * @return the keyPrefixOnNumeric
 	 */
 	public String getKeyPrefixOnNumeric() {
-		return keyPrefixOnNumeric;
+		return keyPrefixOnNumeric.orElse(null);
 	}
 
 
@@ -349,7 +348,7 @@ public class YamlReader implements SmooksXMLReader {
 	 * @param keyPrefixOnNumeric the keyPrefixOnNumeric to set
 	 */
 	public void setKeyPrefixOnNumeric(String keyPrefixOnNumeric) {
-		this.keyPrefixOnNumeric = keyPrefixOnNumeric;
+		this.keyPrefixOnNumeric = Optional.ofNullable(keyPrefixOnNumeric);
 	}
 
 
@@ -357,7 +356,7 @@ public class YamlReader implements SmooksXMLReader {
 	 * @return the illegalElementNameCharReplacement
 	 */
 	public String getIllegalElementNameCharReplacement() {
-		return illegalElementNameCharReplacement;
+		return illegalElementNameCharReplacement.orElse(null);
 	}
 
 
@@ -366,7 +365,7 @@ public class YamlReader implements SmooksXMLReader {
 	 */
 	public void setIllegalElementNameCharReplacement(
 			String illegalElementNameCharReplacement) {
-		this.illegalElementNameCharReplacement = illegalElementNameCharReplacement;
+		this.illegalElementNameCharReplacement = Optional.ofNullable(illegalElementNameCharReplacement);
 	}
 
     public void setIndent(boolean indent) {
