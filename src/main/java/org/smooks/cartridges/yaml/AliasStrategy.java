@@ -42,8 +42,6 @@
  */
 package org.smooks.cartridges.yaml;
 
-import org.smooks.javabean.DataDecodeException;
-
 /**
  * Defines the strategy how to handle anchors and aliasses.
  *
@@ -72,27 +70,4 @@ public enum AliasStrategy {
 	 * business meaning.
 	 */
 	REFER_RESOLVE;
-
-	public static final String REFER_STR = "REFER";
-	public static final String RESOLVE_STR = "RESOLVE";
-	public static final String REFER_RESOLVE_STR = "REFER_RESOLVE";
-
-	/**
-	 * A Data decoder for this Enum
-	 *
-	 * @author <a href="mailto:maurice.zeijen@smies.com">maurice.zeijen@smies.com</a>
-	 *
-	 */
-	public static class DataDecoder implements org.smooks.javabean.DataDecoder {
-
-		/* (non-Javadoc)
-		 * @see org.smooks.javabean.DataDecoder#decode(java.lang.String)
-		 */
-		public Object decode(final String data) throws DataDecodeException {
-			final String value = data.toUpperCase();
-
-			return valueOf(value);
-		}
-
-	}
 }
