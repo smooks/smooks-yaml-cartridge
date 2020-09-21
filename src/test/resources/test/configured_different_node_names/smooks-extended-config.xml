@@ -42,7 +42,7 @@
   =========================LICENSE_END==================================
   -->
 
-<smooks-resource-list xmlns="https://www.smooks.org/xsd/smooks-1.2.xsd" xmlns:yaml="https://www.smooks.org/xsd/smooks/yaml-1.5.xsd">
+<smooks-resource-list xmlns="https://www.smooks.org/xsd/smooks-2.0.xsd" xmlns:yaml="https://www.smooks.org/xsd/smooks/yaml-1.5.xsd">
     <!--
     Configure the YAML Reader to read the message into a stream of SAX events.
     -->
