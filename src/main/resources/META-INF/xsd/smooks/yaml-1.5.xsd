@@ -2,17 +2,17 @@
 <xs:schema targetNamespace="https://www.smooks.org/xsd/smooks/yaml-1.5.xsd"
            elementFormDefault="qualified"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:smooks="https://www.smooks.org/xsd/smooks-1.2.xsd"
-           xmlns:smooks-yaml="https://www.smooks.org/xsd/smooks/yaml-1.5.xsd">
+           xmlns:smooks="https://www.smooks.org/xsd/smooks-2.0.xsd"
+           xmlns:yaml="https://www.smooks.org/xsd/smooks/yaml-1.5.xsd">
 
-    <xs:import namespace="https://www.smooks.org/xsd/smooks-1.2.xsd"/>
+    <xs:import namespace="https://www.smooks.org/xsd/smooks-2.0.xsd"/>
 
     <xs:annotation>
         <xs:documentation xml:lang="en">Smooks YAML Reader Configuration</xs:documentation>
     </xs:annotation>
 
 
-    <xs:element name="reader" type="smooks-yaml:reader" substitutionGroup="smooks:abstract-reader">
+    <xs:element name="reader" type="yaml:reader" substitutionGroup="smooks:abstract-reader">
     	<xs:annotation>
     		<xs:documentation xml:lang="en">
     			YAML Reader Configuration
@@ -29,7 +29,7 @@
     	<xs:complexContent>
     		<xs:extension base="smooks:abstract-reader">
     			<xs:sequence>
-    				<xs:element name="keyMap" type="smooks-yaml:keyMap" maxOccurs="1" minOccurs="0">
+    				<xs:element name="keyMap" type="yaml:keyMap" maxOccurs="1" minOccurs="0">
     					<xs:annotation>
 				    		 <xs:documentation xml:lang="en">
 				    		 	Defines a YAML element name mapping
@@ -189,7 +189,7 @@
 
     <xs:complexType name="keyMap">
     	<xs:sequence>
-    		<xs:element name="key" type="smooks-yaml:key" maxOccurs="unbounded" minOccurs="1">
+    		<xs:element name="key" type="yaml:key" maxOccurs="unbounded" minOccurs="1">
     			<xs:annotation>
     				<xs:documentation xml:lang="en">
 			   		 	Defines a YAML element name mapping.
