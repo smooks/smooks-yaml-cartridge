@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 import org.smooks.SmooksException;
 import org.smooks.cartridges.yaml.handler.*;
 import org.smooks.cdr.Parameter;
-import org.smooks.cdr.SmooksResourceConfiguration;
+import org.smooks.cdr.ResourceConfig;
 import org.smooks.container.ExecutionContext;
 import org.smooks.xml.SmooksXMLReader;
 import org.w3c.dom.Element;
@@ -184,7 +184,7 @@ public class YamlReader implements SmooksXMLReader {
     private AliasStrategy aliasStrategy = AliasStrategy.REFER;
 
     @Inject
-    private SmooksResourceConfiguration config;
+    private ResourceConfig resourceConfig;
 
     private final Yaml yaml = new Yaml();
 
@@ -260,7 +260,7 @@ public class YamlReader implements SmooksXMLReader {
 	 */
 	@SuppressWarnings("unchecked")
 	private Map<String, String> initKeyMap() {
-		Parameter<?> keyMapParam = config.getParameter(CONFIG_PARAM_KEY_MAP, Object.class);
+		Parameter<?> keyMapParam = resourceConfig.getParameter(CONFIG_PARAM_KEY_MAP, Object.class);
 
        if (keyMapParam != null) {
            Object objValue = keyMapParam.getValue();
