@@ -45,13 +45,13 @@ package org.smooks.cartridges.yaml;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Test;
-import org.smooks.Smooks;
-import org.smooks.SmooksException;
-import org.smooks.SmooksUtil;
-import org.smooks.container.ExecutionContext;
-import org.smooks.io.StreamUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smooks.Smooks;
+import org.smooks.api.ExecutionContext;
+import org.smooks.api.SmooksException;
+import org.smooks.io.StreamUtils;
+import org.smooks.support.SmooksUtil;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
