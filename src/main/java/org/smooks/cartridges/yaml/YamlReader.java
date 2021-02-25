@@ -44,12 +44,12 @@ package org.smooks.cartridges.yaml;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smooks.SmooksException;
+import org.smooks.api.ExecutionContext;
+import org.smooks.api.SmooksException;
+import org.smooks.api.resource.config.Parameter;
+import org.smooks.api.resource.config.ResourceConfig;
+import org.smooks.api.resource.reader.SmooksXMLReader;
 import org.smooks.cartridges.yaml.handler.*;
-import org.smooks.cdr.Parameter;
-import org.smooks.cdr.ResourceConfig;
-import org.smooks.container.ExecutionContext;
-import org.smooks.xml.SmooksXMLReader;
 import org.w3c.dom.Element;
 import org.xml.sax.*;
 import org.yaml.snakeyaml.Yaml;
@@ -199,8 +199,8 @@ public class YamlReader implements SmooksXMLReader {
      * (non-Javadoc)
      * @see org.smooks.xml.SmooksXMLReader#setExecutionContext(org.smooks.container.ExecutionContext)
      */
-	public void setExecutionContext(ExecutionContext request) {
-		this.executionContext = request;
+	public void setExecutionContext(ExecutionContext executionContext) {
+		this.executionContext = executionContext;
 	}
 
 	/*

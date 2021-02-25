@@ -42,11 +42,12 @@
  */
 package org.smooks.cartridges.yaml;
 
-import org.smooks.GenericReaderConfigurator;
-import org.smooks.ReaderConfigurator;
+import org.smooks.api.resource.config.Parameter;
+import org.smooks.api.resource.config.ReaderConfigurator;
+import org.smooks.api.resource.config.ResourceConfig;
 import org.smooks.assertion.AssertArgument;
-import org.smooks.cdr.Parameter;
-import org.smooks.cdr.ResourceConfig;
+import org.smooks.engine.resource.config.DefaultParameter;
+import org.smooks.engine.resource.config.GenericReaderConfigurator;
 
 import java.util.List;
 import java.util.Map;
@@ -275,7 +276,7 @@ public class YamlReaderConfigurator implements ReaderConfigurator {
         ResourceConfig config = configList.get(0);
 
         if(keyMap != null) {
-            Parameter keyMapParam = new Parameter(YamlReader.CONFIG_PARAM_KEY_MAP, keyMap);
+            Parameter<Map<String, String>> keyMapParam = new DefaultParameter<>(YamlReader.CONFIG_PARAM_KEY_MAP, keyMap);
             config.setParameter(keyMapParam);
         }
 
