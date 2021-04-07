@@ -1,0 +1,106 @@
+= Smooks YAML Cartridge
+
+image:https://img.shields.io/maven-central/v/org.smooks.cartridges/smooks-yaml-cartridge[Maven Central]
+image:https://img.shields.io/nexus/s/org.smooks.cartridges/smooks-yaml-cartridge?server=https%3A%2F%2Foss.sonatype.org[Sonatype Nexus (Snapshots)]
+image:https://github.com/smooks/smooks-yaml-cartridge/workflows/CI/badge.svg[Build Status]
+
+// tag::smooks-yaml-cartridge[]
+Processing YAML with Smooks requires a YAML reader to be configured:
+
+.smooks-config.xml
+[source,xml]
+----
+<?xml version="1.0"?>
+<smooks-resource-list xmlns="https://www.smooks.org/xsd/smooks-2.0.xsd"
+                      xmlns:yaml="https://www.smooks.org/xsd/smooks/yaml-1.5.xsd">
+
+    <yaml:reader/>
+
+</smooks-resource-list>
+----
+
+YAML stream can contain multiple documents. The reader handles this by adding an element as a child of the root element. An XML serialized YAML stream with one empty YAML document looks like this:
+
+[source,xml]
+----
+<yaml>
+    <document>
+    </document>
+</yaml>
+----
+
+The XML element name of the root element, the element name of the document, and the element name of array elements can be configured with the following configuration options:
+
+* `+rootName+`: The name of the root element. Default: `+yaml+`.
+* `+documentName+`: The name of the document element. Default: `+document+`.
+* `+elementName+`: The name of a sequence element. Default: `+element+`.
+
+YAML allows characters in the key name that aren't allowed in XML element name. To workaround that problem the reader offers multiple solutions. The YAML reader can search and replace white spaces, illegal characters and the number in key names that start with a number. It is also possible to replace one key name with a completely different name. The following example demonstrates all these features:
+
+[source,xml]
+----
+<?xml version="1.0"?>
+<smooks-resource-list xmlns="https://www.smooks.org/xsd/smooks-2.0.xsd"
+                      xmlns:yaml="https://www.smooks.org/xsd/smooks/yaml-1.5.xsd">
+
+    <yaml:reader keyWhitspaceReplacement="_" keyPrefixOnNumeric="n" illegalElementNameCharReplacement=".">
+        <yaml:keyMap>
+            <yaml:key from="some key">someKey</yaml:key>
+            <yaml:key from="some&amp;key" to="someAndKey" />
+        </yaml:keyMap>
+    </yaml:reader>
+
+</smooks-resource-list>
+----
+
+* `+keyWhitspaceReplacement+`: The replacement character for whitespaces in a yaml map key. By default this not defined, so that the reader doesn't search for white spaces.
+* `+keyPrefixOnNumeric+`: The prefix character to add if the YAML node name starts with a number. By default this is not defined, so that the reader doesn't search for element names that start with a number.
+* `+illegalElementNameCharReplacement+`: If illegal characters are encountered in a YAML element name then they are replaced with this value. By default this is not defined, so that the reader doesn't search for element names with illegal characters.
+
+YAML has the concept of anchors and aliases. The YAML reader can handle anchors and aliasses with three different strategies. The strategy is defined via the `+aliasStrategy+` configuration option. This option can have the following values:
+
+* `+REFER+`: The reader creates reference attributes on the element that have an anchor or an alias. The element with the anchor gets the `+id+` attribute containing the name from the anchor as the attribute value. The element with the alias gets the `+ref+` attribute also containing the name of the anchor as the attribute value. The anchor and alias attribute names can be defined by the `+anchorAttributeName+` and `+aliasAttributeName+`.
+
+* `+RESOLVE+`: The reader resolves the value or the data structure of an anchor when its alias is encountered. This means that the SAX events of the anchor are repeated as child events of the alias element. When a YAML document contains a lot of anchors or anchors with a huge data structure then this can lead to memory problems.
+
+* `+REFER_RESOLVE+`: This is a combination of `+REFER+` and `+RESOLVE+`. The anchor and alias attributes are set but the anchor value or data structure is also resolved. This option is useful when the name of the anchor has a business meaning.
+
+By the default the YAML reader uses the `+REFER+` strategy.
+
+== Java API
+
+Smooks is programmatically configured to read a YAML configuration using the link:/javadoc/v1.7.1/smooks/org/milyn/yaml/YamlReaderConfigurator.html[YamlReaderConfigurator] class.
+
+[source,java]
+----
+Smooks smooks = new Smooks();
+
+smooks.setReaderConfig(new YamlReaderConfigurator()
+        .setRootName("root")
+        .setDocumentName("doc")
+        .setArrayElementName("e"))
+        .setAliasStrategy(AliasStrategy.REFER_RESOLVE)
+        .setAnchorAttributeName("anchor")
+        .setAliasAttributeName("alias");
+
+// Use Smooks as normal...
+----
+
+== Maven Coordinates
+
+.pom.xml
+[source,xml]
+----
+<dependency>
+    <groupId>org.smooks.cartridges</groupId>
+    <artifactId>smooks-yaml-cartridge</artifactId>
+    <version>2.0.0-M3</version>
+</dependency>
+----
+
+== XML Namespace
+
+....
+xmlns:yaml="https://www.smooks.org/xsd/smooks/yaml-1.5.xsd"
+....
+// end::smooks-yaml-cartridge[]
