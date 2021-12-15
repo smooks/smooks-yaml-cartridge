@@ -44,7 +44,6 @@ package org.smooks.cartridges.yaml.handler;
 
 import javax.xml.XMLConstants;
 
-import org.apache.commons.lang.StringUtils;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -57,8 +56,7 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 public class YamlToSaxHandler {
 
-
-    private static final AttributesImpl EMPTY_ATTRIBS = new AttributesImpl();
+	private static final AttributesImpl EMPTY_ATTRIBS = new AttributesImpl();
 
 	private static final String ATTRIBUTE_IDREF = "IDREF";
 
@@ -74,7 +72,7 @@ public class YamlToSaxHandler {
 
 	private int elementLevel = 0;
 
-    private static char[] INDENT = new String("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t").toCharArray();
+	private static char[] INDENT = new String("\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t").toCharArray();
 
 	public YamlToSaxHandler(ContentHandler contentHandler, String anchorAttributeName, String aliasAttributeName, boolean indent) {
 		super();
@@ -103,12 +101,12 @@ public class YamlToSaxHandler {
 	}
 
 
-	public void addContentElement(String name, String  value, String anchorName, boolean addAnchorAttribute) throws SAXException {
+	public void addContentElement(String name, String value, String anchorName, boolean addAnchorAttribute) throws SAXException {
 		indent();
 
 		startElement(name, anchorName, addAnchorAttribute);
 
-		if(value != null && value.length() > 0) {
+		if (value != null && value.length() > 0) {
 			contentHandler.characters(value.toCharArray(), 0, value.length());
 		}
 
@@ -124,18 +122,18 @@ public class YamlToSaxHandler {
 
 			String attributeName = addAnchorAttribute ? anchorAttributeName : aliasAttributeName;
 			String attributeType = addAnchorAttribute ? ATTRIBUTE_ID : ATTRIBUTE_IDREF;
-			if(addAnchorAttribute) {
+			if (addAnchorAttribute) {
 
 			}
 			attributes.addAttribute(XMLConstants.NULL_NS_URI,
 					attributeName, attributeName, attributeType,
 					anchorName);
 		}
-		contentHandler.startElement(XMLConstants.NULL_NS_URI, name, StringUtils.EMPTY, attributes);
+		contentHandler.startElement(XMLConstants.NULL_NS_URI, name, "", attributes);
 	}
 
 	private void endElement(String name) throws SAXException {
-		contentHandler.endElement(XMLConstants.NULL_NS_URI, name, StringUtils.EMPTY);
+		contentHandler.endElement(XMLConstants.NULL_NS_URI, name, "");
 	}
 
 	private void indent() throws SAXException {
