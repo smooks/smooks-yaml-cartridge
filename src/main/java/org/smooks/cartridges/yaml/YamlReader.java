@@ -55,7 +55,7 @@ import org.xml.sax.*;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.events.Event;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.io.Reader;
