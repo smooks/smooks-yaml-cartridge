@@ -107,6 +107,6 @@ xmlns:yaml="https://www.smooks.org/xsd/smooks/yaml-1.5.xsd"
 
 == License
 
-Smooks YAML Cartridge is open source and licensed under the terms of the Apache License Version 2.0, or the GNU Lesser General Public License version 3.0 or later. You may use Smooks Templating Cartridge according to either of these licenses as is most appropriate for your project.
+Smooks YAML Cartridge is open source and licensed under the terms of the Apache License Version 2.0, or the GNU Lesser General Public License version 3.0 or later. You may use Smooks YAML Cartridge according to either of these licenses as is most appropriate for your project.
 
 `+SPDX-License-Identifier: Apache-2.0 OR LGPL-3.0-or-later+`
